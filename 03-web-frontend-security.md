@@ -27,7 +27,10 @@ Secure the client-side presentation layer against XSS, DOM manipulation, and oth
 
 | # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **3.3.1** | Verify Content Security Policy (CSP) header | ✓ | ✓ | SC-04 | Mitigates XSS attacks |
+| **3.3.1** | Verify CSP uses `script-src` with nonces or hashes (no `'unsafe-inline'`) | ✓ | ✓ | [ASVS 5.0 V3.5.1](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x12-V3-Web-Frontend-Security.md) | XSS prevention |
+| **3.3.1a** | Verify CSP includes `frame-ancestors 'none'` | ✓ | ✓ | [ASVS 5.0 V3.5.2](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x12-V3-Web-Frontend-Security.md) | Clickjacking prevention |
+| **3.3.1b** | Verify CSP includes `object-src 'none'` | ✓ | ✓ | [ASVS 5.0 V3.5.3](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x12-V3-Web-Frontend-Security.md) | Flash/plugin prevention |
+| **3.3.1c** | Verify CSP includes `base-uri 'self'` | ✓ | ✓ | [CSP Level 2](https://www.w3.org/TR/CSP2/) | Base tag hijacking |
 | **3.3.2** | Verify X-Content-Type-Options header | ✓ | ✓ | SC-04 | Prevents MIME sniffing |
 | **3.3.3** | Verify X-Frame-Options header | ✓ | ✓ | SC-04 | Prevents clickjacking |
 | **3.3.4** | Verify Referrer-Policy header | ✓ | ✓ | SC-04 | Controls referrer leakage |
@@ -38,6 +41,19 @@ Secure the client-side presentation layer against XSS, DOM manipulation, and oth
 | :---: | :--- | :---: | :---: | :---: | :--- |
 | **3.4.1** | Verify security controls are accessible | ✓ | ✓ | DS-04 | Security must not impede accessibility |
 | **3.4.2** | Verify error messages are accessible | ✓ | ✓ | DS-04 | Screen reader compatible |
+
+## V3.7 External Resource Integrity
+
+| # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| **3.7.1** | Verify Subresource Integrity (SRI) for external scripts/stylesheets | | ✓ | [ASVS 5.0 V3.6.1](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x12-V3-Web-Frontend-Security.md) | CDN compromise protection |
+| **3.7.2** | Verify external resources loaded from approved domains only | ✓ | ✓ | ASVS 5.0 V3.6 | Limits trust boundary |
+| **3.7.3** | Verify CSP includes integrity hash verification | | ✓ | [W3C SRI](https://www.w3.org/TR/SRI/) | Defense in depth |
+
+**Rationale for Deviation**: ASVS 5.0 V3.6 covers this. Vibrant marks Enhanced because:
+- SRI requires build pipeline changes (hash generation)
+- CDN compromise affects Enhanced systems handling PHI
+- Baseline systems may use bundled resources only
 
 **Key Principle**: Never trust client-side data for security decisions—all validation must be repeated server-side.
 
