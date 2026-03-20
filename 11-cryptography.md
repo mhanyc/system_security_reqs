@@ -30,8 +30,8 @@ Protect sensitive data at rest and in transit using strong cryptographic algorit
 | :---: | :--- | :---: | :---: | :---: | :--- |
 | **11.3.1** | Verify PHI encrypted at rest | ✓ | ✓ | SC-13, HIPAA 164.312(a)(2)(iv) | HIPAA requirement |
 | **11.3.2** | Verify PHI encrypted in transit | ✓ | ✓ | SC-08, HIPAA 164.312(e) | Network protection |
-| **11.3.3** | Verify field-level encryption for PHI | | ✓ | SC-13 | NOFO SC-14 requirement |
-| **11.3.4** | Verify database encryption (TDE) | | ✓ | SC-13 | Layered defense |
+| **11.3.3** | Verify field-level encryption for PHI | ✓ | ✓ | SC-13, HIPAA 164.312(a)(2)(iv) | PHI requires field-level protection |
+| **11.3.4** | Verify database encryption (TDE) | ✓ | ✓ | SC-13 | TDE is standard for PHI at rest |
 
 ## V11.4 Cryptographic Agility
 
