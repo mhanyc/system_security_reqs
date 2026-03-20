@@ -23,6 +23,9 @@ Securely implement bearer tokens, JWTs, and MAC tokens. Tokens must be signed, v
 | **9.2.2** | Verify claims validation (exp, iat, iss, aud) | ✓ | ✓ | SC-13 | Token integrity |
 | **9.2.3** | Verify no sensitive data in JWT payload | ✓ | ✓ | SC-13 | Token can be decoded |
 | **9.2.4** | Verify key management | ✓ | ✓ | SC-12 | Secure key storage |
+| **9.2.5** | Verify asymmetric signatures (RS256/ES256) preferred over HMAC | ✓ | ✓ | [ASVS 5.0 V9.2.5](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x14-V9-Communication.md) | Key separation |
+| **9.2.6** | Verify key ID (kid) validation to prevent key confusion attacks | ✓ | ✓ | [RFC 7517](https://tools.ietf.org/html/rfc7517) | Algorithm confusion prevention |
+| **9.2.7** | Verify JWT "none" algorithm rejected | ✓ | ✓ | [ASVS 5.0 V9.2.4](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x14-V9-Communication.md) | Auth bypass prevention |
 
 ## V9.3 Token Storage and Transmission
 
