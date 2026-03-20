@@ -2,7 +2,15 @@
 
 ## Overview
 
-This guide applies ASVS requirements to data integration workflows composed of SaaS solutions. Use case: **Sage Intacct → Fivetran → Snowflake → DBT Labs → Files.com**
+This guide applies ASVS requirements to data integration workflows composed of SaaS solutions. The **Sage Intacct → Fivetran → Snowflake → DBT Labs → Files.com** workflow is a hypothetical teaching example designed to help readers understand how to apply ASVS requirements to real-world SaaS integrations.
+
+### Purpose
+
+- Learn to analyze SaaS connectors against ASVS requirements
+- Practice designing compensating controls when direct compliance is not possible
+- Apply the gap analysis methodology to your own SaaS integrations
+
+This is not an implementation manual for a specific production system, but rather a pattern you can apply to any SaaS integration evaluation.
 
 ## Architecture
 
@@ -33,7 +41,7 @@ graph LR
         Files[📁 Files.com<br/>Secure Distribution]
     end
 
-    Intacct -->|🔒 TLS 1.2+<br/>API Auth| Fivetran
+    Intacct -->|🔒 TLS 1.2+<br/>Web Services Auth<br/>⚠️ MFA Not Available| Fivetran
     Fivetran -->|🔒 TLS 1.2+<br/>Column Hashing| Snowflake
     Snowflake -->|🔒 TLS 1.2+<br/>RBAC| DBT
     DBT -->|🔒 TLS 1.2+<br/>PGP Encryption| Files
@@ -58,6 +66,8 @@ graph LR
     class Files distribute
 ```
 
+> **ASVS Analysis Note**: The connection to Sage Intacct uses Web Services authentication, which does not support MFA. This triggers the compensating controls pattern documented in Stage 1.
+
 ### ASVS Mapping by Stage
 
 | Stage | ASVS Requirements | Security Focus |
@@ -68,29 +78,116 @@ graph LR
 | **Transformation (DBT Labs)** | V4, V6.3, V8.1, V16.1 | SSO, environment isolation, project-level permissions |
 | **Distribution (Files.com)** | V4.1, V6.3, V8.4, V14.3 | PGP encryption, path-scoped permissions, emergency access |
 
+## Using This Example for Your SaaS Evaluations
+
+This guide uses Sage Intacct → Fivetran as a concrete example, but the pattern applies to any SaaS integration:
+
+### Step 1: Research the Authentication Model
+
+| Question | Source | What to Document |
+| :--- | :--- | :--- |
+| What authentication protocol? | Vendor API docs | OAuth 2.0, API keys, session-based, etc. |
+| Can MFA be enforced? | Security whitepaper | Platform limitations, available factors |
+| How are credentials stored? | Architecture docs | Your key management responsibilities |
+| What audit logs are available? | Logging documentation | Log types, retention, SIEM integration |
+
+### Step 2: Map to ASVS Requirements
+
+For each ASVS chapter, determine:
+- **Full applicability**: Requirement can be implemented as written
+- **Partial applicability**: Requirement needs modification
+- **Not applicable**: Platform limitation requires compensating control
+
+### Step 3: Design Compensating Controls
+
+When requirements cannot be directly implemented:
+
+1. **Identify the risk** the ASVS requirement addresses
+2. **Find alternative controls** that mitigate the same risk
+3. **Map to other ASVS requirements** where possible
+4. **Document in risk register** with business justification
+5. **Schedule review** (quarterly/annually)
+
+### Example: Mapping Compensating Controls
+
+| ASVS Requirement | Risk Addressed | Your SaaS Limitation | Compensating Control | Mapped To |
+| :--- | :--- | :--- | :--- | :--- |
+| V6.3.1 (MFA) | Stolen credentials | No MFA for API users | IP restrictions + dedicated account | V12.1 (boundaries), V8.1 (least privilege) |
+| V7.1 (session mgmt) | Session hijacking | No session timeout config | Network monitoring + alerts | V16.1 (audit logging) |
+| V11.1 (TLS) | Eavesdropping | Older TLS version required | VPN/private networking | V12.3 (secure transport) |
+
+### Step 4: Document for Compliance
+
+Each SaaS integration should have:
+- ASVS gap analysis worksheet
+- Compensating controls design document
+- Risk register entry for exceptions
+- Quarterly review calendar invite
+
 ## Stage 1: Source System (Sage Intacct)
 
-### ASVS Requirements
+### Scenario
 
-- **V4.1.1**: All APIs require authentication
-- **V6.3.1**: MFA offered to all users
-- **V11.1.1**: Encryption in transit (TLS 1.2+)
+A healthcare organization needs to sync financial data from Sage Intacct to their data warehouse via Fivetran. This example illustrates how to apply ASVS requirements when the SaaS platform has authentication limitations.
 
-### Implementation
+### ASVS Gap Analysis
+
+| ASVS Requirement | Direct Applicability | Analysis |
+| :--- | :--- | :--- |
+| V4.1.1 (API auth required) | Full | Web Services auth requires Sender ID + Company credentials |
+| V6.3.1 (MFA offered) | Not Possible | Sage Intacct disables MFA for Web Services users by design |
+| V6.3.2 (MFA for privileged) | Not Possible | Web Services users are programmatic; no UI access |
+| V11.1.1 (TLS 1.2+) | Full | All connections use TLS 1.2 or higher |
+
+### Decision: Compensating Controls for V6.3
+
+Since MFA cannot be enforced on the API authentication itself, implement compensating controls:
+
+| Missing Control | Compensating Control | ASVS Justification |
+| :--- | :--- | :--- |
+| V6.3.1 (MFA) | Network-level IP restrictions to Fivetran egress IPs | V12.1 (secure communication boundaries) |
+| V6.3.2 (privileged MFA) | Dedicated Web Services user with quarterly review | V8.1.1 (least privilege), V6.2.1 (credential rotation) |
+| Session security | Session token logging with timeout monitoring | V7.1.1 (session management) |
+
+### Example Implementation
+
+**Step 1: Verify Platform Capabilities**
+
+Research the Fivetran Sage Intacct connector authentication model:
+- Requires Web Services developer license (Sender ID + Password)
+- Web Services users cannot use MFA (platform limitation)
+- Uses session-based authentication via `getAPISession`
+
+**Step 2: Configure Compensating Controls**
 
 1. **Sign BAA** with Sage Intacct for PHI handling
-2. **Configure MFA** for all administrative accounts
-3. **Create dedicated API user** with read-only permissions
-4. **Enable IP restrictions** to Fivetran egress IPs
-5. **Rotate API credentials** every 90 days
-6. **Enable audit logging** for all API access
+2. **Obtain Web Services developer license** from Sage Intacct
+3. **Verify "Needs Login for API" setting** is disabled (contact Sage Intacct Support)
+4. **Authorize Sender ID** at company level (Company > Setup > Security)
+5. **Create dedicated Web Services user** (API-only, no UI access)
+6. **Apply compensating controls for missing MFA:**
+   - Configure IP restrictions to Fivetran egress IPs only
+   - Enable Web Services-specific audit logging (separate from UI logs)
+   - Document quarterly review process for Web Services user access
+   - Add exception to risk register with business justification
 
-### Verification
+### Verification Checklist
 
-- [ ] API requests fail without valid credentials
-- [ ] MFA prompt appears for all logins
-- [ ] Credentials rotate on schedule
-- [ ] Logs capture all data access
+- [ ] Web Services authentication model documented with ASVS gap analysis
+- [ ] Compensating controls mapped to alternative ASVS requirements
+- [ ] Risk register exception approved for non-MFA API authentication
+- [ ] Quarterly review process established for Web Services user
+- [ ] Web Services audit logs integrated with SIEM (separate from UI logs)
+- [ ] "Needs Login for API" setting verified as "No"
+
+### Key Takeaway for Readers
+
+When evaluating SaaS connectors:
+1. Research the actual authentication mechanism (do not assume standard API keys)
+2. Document gaps between ASVS requirements and platform capabilities
+3. Design compensating controls that address the same risk (unauthorized access)
+4. Map compensating controls to alternative ASVS requirements
+5. Document exceptions in risk register with business justification
 
 ## Stage 2: Pipeline (Fivetran)
 
@@ -225,6 +322,21 @@ graph LR
 
 ## Cross-Cutting Controls
 
+### Example: V6.3 Authentication Exception Process
+
+When a SaaS connector cannot meet ASVS V6.3 (MFA) requirements:
+
+1. **Document the limitation**: "Sage Intacct Web Services users cannot use MFA (platform design)"
+2. **Identify the risk**: "Stolen Web Services credentials allow unauthorized API access"
+3. **Design compensating controls**:
+   - Network-level IP restrictions (V12.1)
+   - Dedicated service account (V8.1.1)
+   - Enhanced audit logging (V16.1)
+4. **Map to risk register**: Exception #1234, reviewed quarterly
+5. **Schedule review**: Calendar invite for quarterly access review
+
+**Key Principle**: The goal is risk mitigation, not checkbox compliance. Compensating controls are valid when they address the same risk through different mechanisms.
+
 ### V12: Secure Communication
 
 - All connections use TLS 1.2+ (TLS 1.3 where supported)
@@ -273,12 +385,18 @@ graph LR
 - Quarterly access reviews for all five stages
 - Annual penetration testing of the complete pipeline
 
-## Sources
+## Sources and Further Reading
 
-- [ASVS 5.0 Official Site](https://asvs.dev/)
-- [Sage Intacct Security](https://developer.sage.com/intacct/docs/developer-portal/guides/security/)
-- [Fivetran Security](https://www.fivetran.com/security)
-- [Snowflake Security Documentation](https://docs.snowflake.com/en/guides-overview-secure)
-- [DBT Labs Security & Compliance](https://www.getdbt.com/security/)
-- [Files.com Security Overview](https://files.com/security/security-overview)
-- [Cloud Security Alliance - Shared Responsibility Model](https://cloudsecurityalliance.org/blog/2024/08/13/understanding-the-shared-responsibility-model-in-saas)
+This example uses the Fivetran Sage Intacct connector to illustrate ASVS application patterns. When evaluating your own SaaS integrations, consult:
+
+### Vendor Documentation (Example)
+
+- [Fivetran Sage Intacct Setup Guide](https://fivetran.com/docs/connectors/applications/sage-intacct/setup-guide)
+- [Fivetran Sage Intacct API Configuration](https://fivetran.com/docs/connectors/applications/sage-intacct/api-configuration)
+
+### General ASVS Application Resources
+
+- [OWASP ASVS 5.0](https://asvs.dev/)
+- [ASVS SaaS Supplementary Guidance](https://owasp.org/www-project-application-security-verification-standard/)
+
+**Research Tip**: When evaluating a new connector, search for: "[vendor] [connector] authentication", "[vendor] security whitepaper", and "[vendor] API documentation" to find the specific security characteristics.
