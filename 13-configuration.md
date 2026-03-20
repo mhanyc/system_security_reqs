@@ -40,6 +40,21 @@ Ensure secure configuration of application runtime, dependencies, and deployment
 | **13.4.2** | Verify container security | ✓ | ✓ | SC-04 | Isolation |
 | **13.4.3** | Verify IaC scanning | | ✓ | SC-04 | Infrastructure as Code |
 
+## V13.5 Backup and Recovery Security
+
+| # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| **13.5.1** | Verify backup encryption at rest | ✓ | ✓ | [HIPAA 164.312(a)(2)(iv)](https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C/section-164.312) | PHI protection |
+| **13.5.2** | Verify backup integrity verification | ✓ | ✓ | [ASVS 5.0 V13.1.4](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x20-V13-Config.md) | Ransomware recovery |
+| **13.5.3** | Verify offline/air-gapped backup copies | | ✓ | [NIST SP 800-61](https://csrc.nist.gov/publications/detail/sp/800-61/final) | Ransomware resilience |
+| **13.5.4** | Verify backup restoration testing quarterly | ✓ | ✓ | [HIPAA 164.308(a)(7)](https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C/section-164.308) | Contingency planning |
+| **13.5.5** | Verify backup access limited to recovery roles | ✓ | ✓ | SC-11 | Least privilege |
+
+**Rationale for Deviation**: ASVS V13.1 mentions backups but lacks depth. Vibrant requires this because:
+- Ransomware attacks on healthcare are rising 45% YoY ([HHS Ransomware Guidance](https://www.hhs.gov/hipaa/for-professionals/security/guidance/cybersecurity/index.html))
+- HIPAA requires data backup plan as required safeguard [164.308(a)(7)](https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C/section-164.308)
+- 988 Lifeline cannot afford extended downtime during crisis
+
 **Key Principle**: Secure defaults, minimal exposure, and automated scanning for vulnerabilities.
 
 ## References
