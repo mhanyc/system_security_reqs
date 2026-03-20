@@ -43,6 +43,19 @@ Verify user identity securely using modern, evidence-based authentication method
 | **6.4.2** | Verify salt per password | ✓ | ✓ | SC-13 | Prevents rainbow tables |
 | **6.4.3** | Verify constant-time comparison | ✓ | ✓ | SC-13 | Prevents timing attacks |
 
+## V6.5 Phishing-Resistant Authentication
+
+| # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| **6.5.1** | Verify support for FIDO2/WebAuthn phishing-resistant authentication | | ✓ | [NIST SP 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html) | AAL3 equivalent |
+| **6.5.2** | Verify FIDO2 keys resident on secure hardware where available | | ✓ | [ASVS 5.0 V6.5](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x10-V2-Authentication.md) | Device attestation |
+| **6.5.3** | Verify FIDO2 used for privileged accounts where feasible | | ✓ | [CISA MFA Guidance](https://www.cisa.gov/mfa) | Push fatigue protection |
+
+**Rationale for Deviation**: ASVS 5.0 V6.5 covers this. Vibrant marks Enhanced because:
+- FIDO2 deployment requires hardware key distribution (organizational readiness)
+- 988 counselors may work remotely; FIDO2 prevents push notification fatigue attacks
+- CISA recommends phishing-resistant MFA for critical infrastructure
+
 **Key Principle**: Modern authentication emphasizes length over complexity, breach checking, and MFA.
 
 ## References
