@@ -6,19 +6,67 @@ This guide applies ASVS requirements to data integration workflows composed of S
 
 ## Architecture
 
+```mermaid
+%%{init: {'theme':'default', 'themeVariables': {'fontSize':'16px'}}}%%
+graph LR
+    %% Accessibility attributes
+    accTitle: "SaaS Data Pipeline Security Architecture"
+    accDescr: "Five-stage data pipeline architecture for PHI data flow: Sage Intacct (Source) with API authentication and MFA, Fivetran (ETL Pipeline) with column hashing and data minimization, Snowflake (Warehouse) with RBAC and dynamic masking, DBT Labs (Transformation) with environment isolation and SSO, and Files.com (Distribution) with PGP encryption and path-scoped permissions. All connections use TLS 1.2+ encryption."
+
+    subgraph "Source"
+        Intacct[📊 Sage Intacct<br/>Financial Data Source]
+    end
+
+    subgraph "Pipeline"
+        Fivetran[🔄 Fivetran<br/>ETL Pipeline]
+    end
+
+    subgraph "Warehouse"
+        Snowflake[❄️ Snowflake<br/>Data Warehouse]
+    end
+
+    subgraph "Transformation"
+        DBT[⚙️ DBT Labs<br/>Data Transformation]
+    end
+
+    subgraph "Distribution"
+        Files[📁 Files.com<br/>Secure Distribution]
+    end
+
+    Intacct -->|🔒 TLS 1.2+<br/>API Auth| Fivetran
+    Fivetran -->|🔒 TLS 1.2+<br/>Column Hashing| Snowflake
+    Snowflake -->|🔒 TLS 1.2+<br/>RBAC| DBT
+    DBT -->|🔒 TLS 1.2+<br/>PGP Encryption| Files
+
+    %% High-contrast linkStyles for WCAG compliance
+    linkStyle 0 stroke:#333333,stroke-width:2px
+    linkStyle 1 stroke:#333333,stroke-width:2px
+    linkStyle 2 stroke:#333333,stroke-width:2px
+    linkStyle 3 stroke:#333333,stroke-width:2px
+
+    %% Standardized color palette with accessibility compliance
+    classDef source fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#0d47a1
+    classDef pipeline fill:#fff3cd,stroke:#856404,stroke-width:2px,color:#212529
+    classDef warehouse fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
+    classDef transform fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
+    classDef distribute fill:#ffe5e5,stroke:#c62828,stroke-width:2px,color:#b71c1c
+
+    class Intacct source
+    class Fivetran pipeline
+    class Snowflake warehouse
+    class DBT transform
+    class Files distribute
 ```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Sage      │────▶│  Fivetran   │────▶│  Snowflake  │────▶│  DBT Labs   │────▶│  Files.com  │
-│  Intacct    │     │   (ETL)     │     │ (Warehouse) │     │(Transform)  │     │ (Share)     │
-│  (Source)   │     │  (Pipeline) │     │   (Sink)    │     │  (Compute)  │     │ (Distribute)│
-└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
-      │                    │                    │                    │                    │
-      ▼                    ▼                    ▼                    ▼                    ▼
-   V4.1, V6.3          V4.2, V14.2         V6, V8, V14          V4, V6, V8           V4, V6, V14
-   API Auth             Data Handling       Access Control       Project RBAC         Distribution
-   MFA Required         Minimization        Encryption           Environment          Controls
-                                                                    Isolation
-```
+
+### ASVS Mapping by Stage
+
+| Stage | ASVS Requirements | Security Focus |
+| :--- | :--- | :--- |
+| **Source (Sage Intacct)** | V4.1, V6.3, V11.1 | API authentication, MFA, encryption in transit |
+| **Pipeline (Fivetran)** | V4.2, V14.2, V16.1 | Data minimization, column hashing, audit logging |
+| **Warehouse (Snowflake)** | V6, V8, V11.1, V14.1 | RBAC, dynamic masking, customer-managed keys |
+| **Transformation (DBT Labs)** | V4, V6.3, V8.1, V16.1 | SSO, environment isolation, project-level permissions |
+| **Distribution (Files.com)** | V4.1, V6.3, V8.4, V14.3 | PGP encryption, path-scoped permissions, emergency access |
 
 ## Stage 1: Source System (Sage Intacct)
 

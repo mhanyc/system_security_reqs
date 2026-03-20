@@ -28,6 +28,18 @@ This repository contains Vibrant's development of system security requirements. 
 | 16 | [Security Logging and Error Handling](./16-security-logging.md) | Audit logging, error handling |
 | 17 | [WebRTC](./17-webrtc.md) | Real-time communication security |
 
+## Implementation Guides
+
+Practical guides for implementing specific security patterns and workflows:
+
+| Guide | Description | ASVS Chapters |
+| :--- | :--- | :--- |
+| [SaaS Data Pipeline Security](./implementation-guides/saas-data-pipeline-security.md) | Securing multi-stage SaaS integrations (Sage Intacct → Fivetran → Snowflake → DBT Labs → Files.com) | V4, V6, V8, V11, V14, V16 |
+| [Break-Glass Procedures](./implementation-guides/break-glass-procedures.md) | Emergency access for crisis intervention | V8.4 |
+| [Part 2 Consent Workflow](./implementation-guides/part-2-consent-workflow.md) | 42 CFR Part 2 consent management | V14.3 |
+| [PHI Logging Schema](./implementation-guides/phi-logging-schema.md) | Audit logging for PHI access | V16.1 |
+| [FIDO2 Deployment](./implementation-guides/fido2-deployment.md) | WebAuthn/FIDO2 implementation | V6.5 |
+
 ## Understanding Requirement Levels
 
 This repository uses a simplified two-level structure:
@@ -144,6 +156,88 @@ graph TB
 - Communications encrypted between zones
 - Input validation occurs before processing
 - All access logged for audit trails
+
+## Architecture-Requirements Mapping
+
+The System Architecture diagram above illustrates how ASVS requirements map to operational components in a SaaS-composed environment. Each layer corresponds to specific ASVS chapters:
+
+| Architecture Layer | ASVS Chapters | Responsibility |
+| :--- | :--- | :--- |
+| **Untrusted Zone** (Browser, Mobile) | V3 (Web Frontend), V6 (Authentication), V7 (Session) | Customer: Identity provider, MFA enforcement |
+| **DMZ / Edge Layer** (WAF, API Gateway) | V4 (API Security), V12 (Secure Communication) | Shared: Provider infrastructure, Customer configuration |
+| **Trusted Service Layer** (Auth, Session, Access Control) | V6-V10 (Auth, Session, AuthZ, Tokens, OAuth) | Customer: Identity architecture, Provider: Platform controls |
+| **Data Layer** (Database, Vault, Logs) | V11 (Crypto), V14 (Data Protection), V16 (Logging) | Shared: Encryption defaults, Customer: Key management, classification |
+
+### How to Read This for SaaS Systems
+
+For systems composed of SaaS solutions (like Sage Intacct → Fivetran → Snowflake → DBT Labs → Files.com):
+
+1. **Identify Control Boundaries**: Determine which controls are provider-managed vs customer-configured
+2. **Map to ASVS Chapters**: Each integration point maps to ASVS requirements (e.g., API authentication → V4.1, V6.3)
+3. **Apply Shared Responsibility**: Use ASVS as a vendor assessment framework—require SaaS providers to demonstrate compliance with relevant ASVS controls
+4. **Document Gaps**: Where ASVS assumes code-level controls, substitute with vendor certifications (SOC 2) and configuration requirements
+
+### Example: Data Pipeline Security Mapping
+
+For a **Sage Intacct → Fivetran → Snowflake → DBT Labs → Files.com** workflow:
+
+| Stage | ASVS Requirements | Implementation Approach |
+| :--- | :--- | :--- |
+| **Source (Sage Intacct)** | V4.1.1 (API auth), V6.3 (MFA), V11 (encryption) | Verify BAA signed, MFA enforced, API keys rotated |
+| **Pipeline (Fivetran)** | V4.2 (REST security), V14.2 (data handling), V16 (logging) | Configure column hashing, enable audit logs, verify encryption in transit |
+| **Warehouse (Snowflake)** | V6 (authentication), V8 (authorization), V14 (data protection) | Implement RBAC, dynamic masking, Tri-Secret Secure keys |
+| **Transformation (DBT Labs)** | V4 (API security), V6.3 (MFA), V8 (RBAC), V16 (logging) | SAML SSO, project-level permissions, environment isolation |
+| **Distribution (Files.com)** | V4.1 (API security), V6.3 (MFA), V14.3 (privacy), V8.4 (emergency) | 2FA enforcement, path-scoped permissions, PGP encryption, consent tracking |
+
+## Using ASVS with SaaS Systems
+
+ASVS is traditionally a software development standard, but it serves a critical role in **SaaS procurement and configuration**. This section explains how to apply these requirements when you don't control the codebase.
+
+### The Shared Responsibility Model
+
+When using SaaS solutions, security is a partnership:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  PROVIDER RESPONSIBILITY          CUSTOMER RESPONSIBILITY   │
+│  ───────────────────────          ───────────────────────   │
+│  • Platform security              • Configuration           │
+│  • Infrastructure hardening       • Access control setup    │
+│  • Default encryption             • Data classification     │
+│  • Maintaining certifications     • MFA enforcement         │
+│  • Vulnerability patching         • Monitoring & alerting   │
+│  • Incident notification          • Audit log retention     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### ASVS as a Vendor Assessment Framework
+
+For each SaaS vendor in your workflow, map ASVS requirements to evidence:
+
+| ASVS Chapter | Evidence to Request from Vendor | Customer Verification |
+| :--- | :--- | :--- |
+| V4 (API Security) | API security documentation, rate limiting policies | Test authentication requirements, validate TLS |
+| V6 (Authentication) | MFA support matrix, SSO compatibility | Enforce MFA, configure IdP integration |
+| V8 (Authorization) | RBAC documentation, privilege escalation tests | Configure least-privilege roles |
+| V11 (Cryptography) | Encryption whitepaper, key management practices | Verify CMK options, audit key rotation |
+| V14 (Data Protection) | Data handling policies, retention/deletion procedures | Configure DLP, verify BAA terms |
+| V16 (Logging) | Audit log schema, SIEM integration options | Export logs, set up monitoring |
+
+### When ASVS Requirements Don't Apply Directly
+
+Some ASVS requirements assume custom code. For SaaS systems:
+
+- **Code-level requirements** (e.g., V1 encoding, V15 secure coding) → Substitute with vendor SDLC attestations (SOC 2 CC6.1-6.8)
+- **Infrastructure requirements** (e.g., V13 configuration) → Map to provider certifications + customer configuration
+- **Application logic** (e.g., V2 validation) → Verify through vendor penetration test results
+
+### Risk-Based Application
+
+| System Type | ASVS Level | Evidence Required |
+| :--- | :--- | :--- |
+| High-risk (PHI, financial data) | L2-L3 | SOC 2 Type II, penetration tests, BAA, ASVS questionnaire |
+| Medium-risk (business data) | L1-L2 | SOC 2 Type II, security whitepaper |
+| Low-risk (public data) | L1 | Self-attestation, basic security review |
 
 ## Deviations from ASVS 5.0
 
