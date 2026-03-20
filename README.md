@@ -151,16 +151,16 @@ This document extends ASVS 5.0 to address healthcare-specific requirements and 9
 
 | Requirement | ASVS Status | Deviation Rationale | Regulatory Basis |
 | :--- | :--- | :--- | :--- |
-| **V8.4** (New Section) | Not in ASVS | 988 Lifeline requires emergency access for crisis intervention; normal authentication may block life-saving access | HIPAA 164.312(a)(2)(ii) |
-| **V14.3.1** (Expanded) | Modified from ASVS | 42 CFR Part 2 requires 8 specific consent elements; generic consent is invalid under criminal penalty framework | 42 CFR 2.31, 2.32 |
-| **V14.5** (New Section) | Not in ASVS | Part 2 permits disclosure to medical personnel in bona fide emergencies; lack of procedures could delay crisis intervention | 42 CFR 2.51 |
-| **V16.1.5** (New Section) | Modified from ASVS | HIPAA explicitly requires PHI-specific audit controls; OCR investigations focus on PHI access capabilities | HIPAA 164.312(b) |
-| **V16.3.3** (Enhanced) | Modified from ASVS | HIPAA mandates 6-year retention for security documentation; ASVS recommends but doesn't specify duration | HIPAA 164.316(b)(1) |
-| **V1.5** (New Section) | In ASVS V1.5 | Deserialization attacks achieve RCE; 988 systems are high-value targets requiring L1 compliance | ASVS 5.0 V1.5 |
-| **V2.4** (New Section) | In ASVS V2.2 | Separated for auditability; 988 faces targeted credential stuffing (counselor accounts = access to vulnerable callers) | ASVS 5.0 V2.2.6-2.2.7 |
-| **V11.3.3, V11.3.4** (Baseline) | Modified from ASVS | Field-level encryption and TDE are baseline HIPAA requirements, not "enhanced" security | HIPAA 164.312(a)(2)(iv) |
-| **V14.3.4** (Baseline) | Modified from ASVS | Accounting of disclosures is required by HIPAA §164.528, not optional | HIPAA 164.528 |
-| **V8.2.3, V8.2.4** (Baseline) | Modified from ASVS | Time/location-based access controls are standard for PHI protection | HIPAA 164.312(a)(1) |
+| [**V8.4**](./08-authorization.md#v84-emergency-access-break-glass) (New Section) | Not in ASVS | 988 Lifeline requires emergency access for crisis intervention; normal authentication may block life-saving access | HIPAA 164.312(a)(2)(ii) |
+|[**V14.3.1**](./14-data-protection.md#v143-privacy-controls) (Expanded) | Modified from ASVS | 42 CFR Part 2 requires 8 specific consent elements; generic consent is invalid under criminal penalty framework | 42 CFR 2.31, 2.32 |
+|[**V14.5**](./14-data-protection.md#v145-emergency-disclosures-42-cfr-part-2) (New Section) | Not in ASVS | Part 2 permits disclosure to medical personnel in bona fide emergencies; lack of procedures could delay crisis intervention | 42 CFR 2.51 |
+|[**V16.1.5**](./16-security-logging.md#v1615-phi-access-logging) (New Section) | Modified from ASVS | HIPAA explicitly requires PHI-specific audit controls; OCR investigations focus on PHI access capabilities | HIPAA 164.312(b) |
+|[**V16.3.3**](./16-security-logging.md#v163-log-protection) (Enhanced) | Modified from ASVS | HIPAA mandates 6-year retention for security documentation; ASVS recommends but doesn't specify duration | HIPAA 164.316(b)(1) |
+|[**V1.5**](./01-encoding-sanitization.md#v15-secure-deserialization) (New Section) | In ASVS V1.5 | Deserialization attacks achieve RCE; 988 systems are high-value targets requiring L1 compliance | ASVS 5.0 V1.5 |
+|[**V2.4**](./02-validation-business-logic.md#v24-anti-automation-and-anti-spam) (New Section) | In ASVS V2.2 | Separated for auditability; 988 faces targeted credential stuffing (counselor accounts = access to vulnerable callers) | ASVS 5.0 V2.2.6-2.2.7 |
+|[**V11.3.3, V11.3.4**](./11-cryptography.md#v113-data-protection) (Baseline) | Modified from ASVS | Field-level encryption and TDE are baseline HIPAA requirements, not "enhanced" security | HIPAA 164.312(a)(2)(iv) |
+|[**V14.3.4**](./14-data-protection.md#v143-privacy-controls) (Baseline) | Modified from ASVS | Accounting of disclosures is required by HIPAA §164.528, not optional | HIPAA 164.528 |
+|[**V8.2.3, V8.2.4**](./08-authorization.md#v82-permission-management) (Baseline) | Modified from ASVS | Time/location-based access controls are standard for PHI protection | HIPAA 164.312(a)(1) |
 
 ## Usage
 
