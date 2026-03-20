@@ -42,6 +42,21 @@ Prevent injection attacks by properly validating input and encoding output. Inpu
 | **1.3.7** | Verify LDAP injection protection | ✓ | ✓ | SC-04 | Prevents directory injection |
 | **1.3.8** | Verify OS command injection protection | ✓ | ✓ | SC-04 | Prevents command execution |
 
+## V1.5 Secure Deserialization
+
+| # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| **1.5.1** | Verify secure deserialization of untrusted data (JSON, XML, YAML) | ✓ | ✓ | [ASVS 5.0 V1.5](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x11-V1-Architecture.md) | Prevents RCE via deserialization |
+| **1.5.2** | Verify XML parsers disable DTDs and external entities (XXE prevention) | ✓ | ✓ | [ASVS 5.0 V1.5.2](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x11-V1-Architecture.md) | Prevents XXE attacks |
+| **1.5.3** | Verify type checking on deserialized objects | ✓ | ✓ | ASVS 5.0 V1.5.3 | Prevents type confusion |
+| **1.5.4** | Verify no insecure deserialization functions (pickle, ObjectInputStream) | ✓ | ✓ | [OWASP Top 10:2021 A08](https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/) | Known vulnerability |
+
+**References**:
+- [CWE-502: Deserialization of Untrusted Data](https://cwe.mitre.org/data/definitions/502.html)
+- [OWASP Deserialization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html)
+
+**Rationale**: ASVS L1 requirement. Deserialization attacks achieve RCE with single request; 988 systems are high-value targets.
+
 **Key Principle**: Output encoding is context-specific—HTML, JavaScript, SQL, URL, and OS commands each require different encoding.
 
 **Examples**:
