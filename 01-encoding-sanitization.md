@@ -46,10 +46,10 @@ Prevent injection attacks by properly validating input and encoding output. Inpu
 
 | # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **1.5.1** | Verify secure deserialization of untrusted data (JSON, XML, YAML) | ✓ | ✓ | [ASVS 5.0 V1.5](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x11-V1-Architecture.md) | Prevents RCE via deserialization |
-| **1.5.2** | Verify XML parsers disable DTDs and external entities (XXE prevention) | ✓ | ✓ | [ASVS 5.0 V1.5.2](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x11-V1-Architecture.md) | Prevents XXE attacks |
-| **1.5.3** | Verify type checking on deserialized objects | ✓ | ✓ | ASVS 5.0 V1.5.3 | Prevents type confusion |
-| **1.5.4** | Verify no insecure deserialization functions (pickle, ObjectInputStream) | ✓ | ✓ | [OWASP Top 10:2021 A08](https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/) | Known vulnerability |
+| **1.5.1** | Verify secure deserialization of untrusted data (JSON, XML, YAML) | ✓ | ✓ | SC-04 | Prevents RCE via deserialization |
+| **1.5.2** | Verify XML parsers disable DTDs and external entities (XXE prevention) | ✓ | ✓ | SC-04 | Prevents XXE attacks |
+| **1.5.3** | Verify type checking on deserialized objects | ✓ | ✓ | SC-04 | Prevents type confusion |
+| **1.5.4** | Verify no insecure deserialization functions (pickle, ObjectInputStream) | ✓ | ✓ | SC-04 | Known vulnerability |
 
 **References**:
 - [CWE-502: Deserialization of Untrusted Data](https://cwe.mitre.org/data/definitions/502.html)

@@ -44,10 +44,10 @@ Ensure secure configuration of application runtime, dependencies, and deployment
 
 | # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **13.5.1** | Verify backup encryption at rest | ✓ | ✓ | [HIPAA 164.312(a)(2)(iv)](https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C/section-164.312) | PHI protection |
-| **13.5.2** | Verify backup integrity verification | ✓ | ✓ | [ASVS 5.0 V13.1.4](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x20-V13-Config.md) | Ransomware recovery |
-| **13.5.3** | Verify offline/air-gapped backup copies | | ✓ | [NIST SP 800-61](https://csrc.nist.gov/publications/detail/sp/800-61/final) | Ransomware resilience |
-| **13.5.4** | Verify backup restoration testing quarterly | ✓ | ✓ | [HIPAA 164.308(a)(7)](https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C/section-164.308) | Contingency planning |
+| **13.5.1** | Verify backup encryption at rest | ✓ | ✓ | HIPAA 164.312(a)(2)(iv) | PHI protection |
+| **13.5.2** | Verify backup integrity verification | ✓ | ✓ | SC-04 | Ransomware recovery |
+| **13.5.3** | Verify offline/air-gapped backup copies | | ✓ | SC-04 | Ransomware resilience |
+| **13.5.4** | Verify backup restoration testing quarterly | ✓ | ✓ | HIPAA 164.308(a)(7) | Contingency planning |
 | **13.5.5** | Verify backup access limited to recovery roles | ✓ | ✓ | SC-11 | Least privilege |
 
 **Rationale for Deviation**: ASVS V13.1 mentions backups but lacks depth. Vibrant requires this because:

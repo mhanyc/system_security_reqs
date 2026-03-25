@@ -19,7 +19,7 @@ Log security events for audit and forensic purposes. Handle errors securely with
 
 | # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **16.1.5** | Verify all PHI access logged (create, read, update, delete) | ✓ | ✓ | [HIPAA 164.312(b)](https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C/section-164.312) | Required audit controls |
+| **16.1.5** | Verify all PHI access logged (create, read, update, delete) | ✓ | ✓ | HIPAA 164.312(b) | Required audit controls |
 | **16.1.6** | Verify PHI access logs include: user ID, patient ID, action, timestamp, data elements accessed | ✓ | ✓ | HIPAA 164.312(b) | Complete audit trail |
 | **16.1.7** | Verify failed PHI access attempts logged | ✓ | ✓ | HIPAA 164.312(b) | Detect unauthorized attempts |
 
@@ -43,7 +43,7 @@ Log security events for audit and forensic purposes. Handle errors securely with
 | :---: | :--- | :---: | :---: | :---: | :--- |
 | **16.3.1** | Verify log integrity | ✓ | ✓ | SC-08 | Tamper evidence |
 | **16.3.2** | Verify log storage protection | ✓ | ✓ | SC-08, HIPAA 164.312(b) | HIPAA requirement |
-| **16.3.3** | Verify audit logs retained for 6+ years (HIPAA documentation) | ✓ | ✓ | [HIPAA 164.316(b)(1)](https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C/section-164.316) | Federal retention requirement |
+| **16.3.3** | Verify audit logs retained for 6+ years (HIPAA documentation) | ✓ | ✓ | HIPAA 164.316(b)(1) | Federal retention requirement |
 
 **Rationale for Deviation**: ASVS recommends retention but doesn't specify duration. Vibrant requires this because:
 - HIPAA mandates 6-year retention for security policy documentation
@@ -55,8 +55,8 @@ Log security events for audit and forensic purposes. Handle errors securely with
 
 | # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **16.4.1** | Verify audit logs reviewed for inappropriate access | ✓ | ✓ | [HIPAA 164.312(b)](https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C/section-164.312) | OCR guidance requirement |
-| **16.4.2** | Verify automated analysis for anomalous patterns | | ✓ | [NIST SP 800-53 AU-6](https://csrc.nist.gov/projects/risk-management/sp800-53-controls/release-search#!/control?version=5.1&number=AU-6) | Insider threat detection |
+| **16.4.1** | Verify audit logs reviewed for inappropriate access | ✓ | ✓ | HIPAA 164.312(b) | OCR guidance requirement |
+| **16.4.2** | Verify automated analysis for anomalous patterns | | ✓ | AU-6 | Insider threat detection |
 | **16.4.3** | Verify review documented with findings and remediation | ✓ | ✓ | HIPAA 164.312(b) | Accountability |
 
 **Rationale**: HIPAA requires audit controls, not just log collection.
