@@ -36,10 +36,10 @@ Ensure applications validate data consistency and enforce business logic correct
 
 | # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **2.4.1** | Verify anti-automation detects and prevents credential stuffing attacks | ✓ | ✓ | [ASVS 5.0 V2.2.6](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x10-V2-Authentication.md) | Prevents account takeover |
-| **2.4.2** | Verify progressive delays for failed authentication attempts | ✓ | ✓ | [ASVS 5.0 V2.2.7](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x10-V2-Authentication.md) | Rate limiting |
-| **2.4.3** | Verify CAPTCHA/reCAPTCHA after N failed attempts | ✓ | ✓ | ASVS 5.0 V2.2.6 | Distinguish humans |
-| **2.4.4** | Verify anti-spam protection on messaging features | ✓ | ✓ | [ASVS 5.0 V2.4](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x10-V2-Authentication.md) | Prevents abuse |
+| **2.4.1** | Verify anti-automation detects and prevents credential stuffing attacks | ✓ | ✓ | SC-04 | Prevents account takeover |
+| **2.4.2** | Verify progressive delays for failed authentication attempts | ✓ | ✓ | SC-04 | Rate limiting |
+| **2.4.3** | Verify CAPTCHA/reCAPTCHA after N failed attempts | ✓ | ✓ | SC-04 | Distinguish humans |
+| **2.4.4** | Verify anti-spam protection on messaging features | ✓ | ✓ | SC-04 | Prevents abuse |
 
 **Rationale for Deviation**: ASVS 5.0 places these in V2.2; Vibrant separates into dedicated section because:
 - 988 Lifeline faces targeted credential stuffing (crisis counselor accounts = access to vulnerable callers)

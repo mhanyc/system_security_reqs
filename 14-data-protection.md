@@ -28,8 +28,8 @@ Protect personally identifiable information (PII) and protected health informati
 
 | # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **14.3.1** | Verify Part 2 consent includes: patient name, disclosing program, information description, recipient, purpose, expiration, patient signature | ✓ | ✓ | [42 CFR 2.31](https://www.ecfr.gov/current/title-42/chapter-I/subchapter-A/part-2/subpart-C/section-2.31) | Federal law requirement |
-| **14.3.1a** | Verify Part 2 consent includes re-disclosure prohibition notice to recipient | ✓ | ✓ | [42 CFR 2.32](https://www.ecfr.gov/current/title-42/chapter-I/subchapter-A/part-2/subpart-C/section-2.32) | Required notice |
+| **14.3.1** | Verify Part 2 consent includes: patient name, disclosing program, information description, recipient, purpose, expiration, patient signature | ✓ | ✓ | 42 CFR 2.31 | Federal law requirement |
+| **14.3.1a** | Verify Part 2 consent includes re-disclosure prohibition notice to recipient | ✓ | ✓ | 42 CFR 2.32 | Required notice |
 | **14.3.1b** | Verify Part 2 consent expiration is event-based or time-limited | ✓ | ✓ | 42 CFR 2.31 | Limits disclosure scope |
 
 **Rationale for Deviation**: ASVS has generic "consent management." Vibrant requires this because:
@@ -52,7 +52,7 @@ Protect personally identifiable information (PII) and protected health informati
 
 | # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **14.5.1** | Verify medical emergency disclosure procedures without prior consent | ✓ | ✓ | [42 CFR 2.51](https://www.ecfr.gov/current/title-42/chapter-I/subchapter-A/part-2/subpart-D/section-2.51) | Medical emergency exception |
+| **14.5.1** | Verify medical emergency disclosure procedures without prior consent | ✓ | ✓ | 42 CFR 2.51 | Medical emergency exception |
 | **14.5.2** | Verify emergency disclosure limited to treating professionals | ✓ | ✓ | 42 CFR 2.51 | Limits scope |
 | **14.5.3** | Verify emergency disclosure documented with medical necessity | ✓ | ✓ | 42 CFR 2.51 | Audit requirement |
 | **14.5.4** | Verify patient notified of emergency disclosure post-event | | ✓ | 42 CFR 2.51 | Patient rights |
@@ -66,7 +66,7 @@ Protect personally identifiable information (PII) and protected health informati
 
 | # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **14.6.1** | Verify tokenization available for PHI where appropriate | | ✓ | [PCI DSS Tokenization](https://www.pcisecuritystandards.org/) | Reduce exposure scope |
+| **14.6.1** | Verify tokenization available for PHI where appropriate | | ✓ | SC-13 | Reduce exposure scope |
 | **14.6.2** | Verify token vault separate from application databases | | ✓ | SC-13 | Isolation |
 | **14.6.3** | Verify token-to-data mapping protected with encryption | | ✓ | SC-13 | Confidentiality |
 

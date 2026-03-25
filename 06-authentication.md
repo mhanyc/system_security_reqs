@@ -10,7 +10,7 @@ Verify user identity securely using modern, evidence-based authentication method
 
 | # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **6.1.1** | Verify minimum password length (12+ characters) | ✓ | ✓ | SC-12, NIST 800-63b | Length over complexity |
+| **6.1.1** | Verify minimum password length (12+ characters) | ✓ | ✓ | SC-12 | Length over complexity |
 | **6.1.2** | Verify maximum password length (128 chars) | ✓ | ✓ | SC-12 | Buffer overflow prevention |
 | **6.1.3** | Verify breach database checking | ✓ | ✓ | SC-12 | Prevents compromised passwords |
 | **6.1.4** | Verify no password composition rules | ✓ | ✓ | SC-12 | Allows passphrases |
@@ -47,9 +47,9 @@ Verify user identity securely using modern, evidence-based authentication method
 
 | # | Requirement | Baseline | Enhanced | Regulations | Why It Matters |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **6.5.1** | Verify support for FIDO2/WebAuthn phishing-resistant authentication | | ✓ | [NIST SP 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html) | AAL3 equivalent |
-| **6.5.2** | Verify FIDO2 keys resident on secure hardware where available | | ✓ | [ASVS 5.0 V6.5](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x10-V2-Authentication.md) | Device attestation |
-| **6.5.3** | Verify FIDO2 used for privileged accounts where feasible | | ✓ | [CISA MFA Guidance](https://www.cisa.gov/mfa) | Push fatigue protection |
+| **6.5.1** | Verify support for FIDO2/WebAuthn phishing-resistant authentication | | ✓ | SC-12 | AAL3 equivalent |
+| **6.5.2** | Verify FIDO2 keys resident on secure hardware where available | | ✓ | SC-12 | Device attestation |
+| **6.5.3** | Verify FIDO2 used for privileged accounts where feasible | | ✓ | SC-12 | Push fatigue protection |
 
 **Rationale for Deviation**: ASVS 5.0 V6.5 covers this. Vibrant marks Enhanced because:
 - FIDO2 deployment requires hardware key distribution (organizational readiness)
